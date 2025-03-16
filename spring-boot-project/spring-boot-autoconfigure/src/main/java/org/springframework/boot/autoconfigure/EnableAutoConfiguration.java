@@ -74,6 +74,7 @@ import org.springframework.context.annotation.Import;
  * @see AutoConfigureAfter
  * @see SpringBootApplication
  */
+// note 20250316
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
