@@ -14,10 +14,34 @@
  * limitations under the License.
  */
 
-package org.springframework.boot.autoconfigure.data.alt.jpa;
+package org.springframework.boot.autoconfigure.data;
 
-import org.springframework.data.repository.Repository;
+/**
+ * Type of Spring Data repositories to enable.
+ *
+ * @author Andy Wilkinson
+ * @since 2.0.0
+ */
+public enum RepositoryType {
 
-public interface CityJpaRepository extends Repository<City, Long> {
+	/**
+	 * Enables all repository types automatically based on their availability.
+	 */
+	AUTO,
+
+	/**
+	 * Enables imperative repositories.
+	 */
+	IMPERATIVE,
+
+	/**
+	 * Enables no repositories.
+	 */
+	NONE,
+
+	/**
+	 * Enables reactive repositories.
+	 */
+	REACTIVE
 
 }

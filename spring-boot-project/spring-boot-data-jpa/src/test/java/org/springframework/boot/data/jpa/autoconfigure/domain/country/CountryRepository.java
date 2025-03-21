@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package org.springframework.boot.autoconfigure.data.alt.jpa;
+package org.springframework.boot.data.jpa.autoconfigure.domain.country;
 
-import org.springframework.data.repository.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.history.RevisionRepository;
 
-public interface CityJpaRepository extends Repository<City, Long> {
+public interface CountryRepository extends JpaRepository<Country, Long>, RevisionRepository<Country, Long, Integer> {
 
 }

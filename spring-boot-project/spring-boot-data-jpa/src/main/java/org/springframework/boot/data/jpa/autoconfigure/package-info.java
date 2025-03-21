@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.boot.autoconfigure.data.alt.jpa;
-
-import org.springframework.data.repository.Repository;
-
-public interface CityJpaRepository extends Repository<City, Long> {
-
-}
+/**
+ * Auto-configuration for Spring Data JPA.
+ */
+package org.springframework.boot.data.jpa.autoconfigure;
