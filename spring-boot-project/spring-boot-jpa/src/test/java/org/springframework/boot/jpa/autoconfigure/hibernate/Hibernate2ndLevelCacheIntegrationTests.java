@@ -16,14 +16,18 @@
 
 package org.springframework.boot.jpa.autoconfigure.hibernate;
 
+import javax.cache.CacheManager;
+import javax.cache.Caching;
+
 import org.ehcache.jsr107.EhcacheCachingProvider;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
 import org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.jcache.JCacheCacheManager;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,8 +40,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class Hibernate2ndLevelCacheIntegrationTests {
 
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-		.withConfiguration(AutoConfigurations.of(CacheAutoConfiguration.class, DataSourceAutoConfiguration.class,
-				HibernateJpaAutoConfiguration.class))
+		.withConfiguration(
+				AutoConfigurations.of(DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class))
 		.withUserConfiguration(TestConfiguration.class);
 
 	@Test
@@ -53,6 +57,16 @@ class Hibernate2ndLevelCacheIntegrationTests {
 	@Configuration(proxyBeanMethods = false)
 	@EnableCaching
 	static class TestConfiguration {
+
+		@Bean
+		CacheManager cacheManager() {
+			return Caching.getCachingProvider(EhcacheCachingProvider.class.getName()).getCacheManager();
+		}
+
+		@Bean
+		JCacheCacheManager jcacheCacheManager(CacheManager cacheManager) {
+			return new JCacheCacheManager(cacheManager);
+		}
 
 	}
 
