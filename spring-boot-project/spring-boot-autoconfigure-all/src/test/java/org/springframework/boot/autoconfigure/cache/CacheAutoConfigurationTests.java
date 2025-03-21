@@ -49,9 +49,8 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.cache.support.MockCachingProvider;
 import org.springframework.boot.autoconfigure.cache.support.MockCachingProvider.MockCacheManager;
-import org.springframework.boot.autoconfigure.hazelcast.HazelcastAutoConfiguration;
+import org.springframework.boot.hazelcast.autoconfigure.HazelcastAutoConfiguration;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
-import org.springframework.boot.testsupport.classpath.ClassPathExclusions;
 import org.springframework.boot.testsupport.classpath.resources.WithResource;
 import org.springframework.cache.Cache;
 import org.springframework.cache.Cache.ValueWrapper;
@@ -97,7 +96,6 @@ import static org.mockito.Mockito.times;
  * @author Mark Paluch
  * @author Ryon Day
  */
-@ClassPathExclusions("hazelcast-client-*.jar")
 class CacheAutoConfigurationTests extends AbstractCacheAutoConfigurationTests {
 
 	@Test
@@ -433,7 +431,7 @@ class CacheAutoConfigurationTests extends AbstractCacheAutoConfigurationTests {
 	@Test
 	void jCacheCacheWithConfig() {
 		String cachingProviderFqn = MockCachingProvider.class.getName();
-		String configLocation = "org/springframework/boot/autoconfigure/hazelcast/hazelcast-specific.xml";
+		String configLocation = "org/springframework/boot/autoconfigure/cache/hazelcast-specific.xml";
 		this.contextRunner.withUserConfiguration(JCacheCustomConfiguration.class)
 			.withPropertyValues("spring.cache.type=jcache", "spring.cache.jcache.provider=" + cachingProviderFqn,
 					"spring.cache.jcache.config=" + configLocation)
@@ -521,7 +519,7 @@ class CacheAutoConfigurationTests extends AbstractCacheAutoConfigurationTests {
 
 	@Test
 	void hazelcastCacheWithHazelcastAutoConfiguration() {
-		String hazelcastConfig = "org/springframework/boot/autoconfigure/hazelcast/hazelcast-specific.xml";
+		String hazelcastConfig = "org/springframework/boot/autoconfigure/cache/hazelcast-specific.xml";
 		this.contextRunner.withConfiguration(AutoConfigurations.of(HazelcastAutoConfiguration.class))
 			.withUserConfiguration(DefaultCacheConfiguration.class)
 			.withPropertyValues("spring.cache.type=hazelcast", "spring.hazelcast.config=" + hazelcastConfig)
