@@ -51,6 +51,7 @@ import org.springframework.util.ErrorHandler;
  * @author Chris Bono
  * @since 1.0.0
  */
+// 其实SpringApplicationRunListener 在spring boot中配置的只有EventPublishingRunListener:
 public class EventPublishingRunListener implements SpringApplicationRunListener, Ordered {
 
 	private final SpringApplication application;
@@ -73,6 +74,7 @@ public class EventPublishingRunListener implements SpringApplicationRunListener,
 		return 0;
 	}
 
+	// 发布事件
 	@Override
 	public void starting(ConfigurableBootstrapContext bootstrapContext) {
 		this.initialMulticaster

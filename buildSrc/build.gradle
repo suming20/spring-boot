@@ -24,6 +24,7 @@ new File(projectDir.parentFile, "gradle.properties").withInputStream {
 ext.set("versions", versions)
 if (versions.springFramework.contains("-")) {
 	repositories {
+		maven { url "https://maven.aliyun.com/repository/public" }
 		maven { url "https://repo.spring.io/milestone" }
 		maven { url "https://repo.spring.io/snapshot" }
 	}
