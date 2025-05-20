@@ -123,14 +123,19 @@ public class AutoConfigurationImportSelector implements DeferredImportSelector, 
 			return EMPTY_ENTRY;
 		}
 		AnnotationAttributes attributes = getAttributes(annotationMetadata);
-		// 获取候选的配置类集合
+		// 获取候选的配置类集合 spring.factories
 		List<String> configurations = getCandidateConfigurations(annotationMetadata, attributes);
+		// 使用LinkedHashSet移除重复的配置类
 		configurations = removeDuplicates(configurations);
+		// 得到要排除的配置类，比如注解属性exclude的配置类
 		Set<String> exclusions = getExclusions(annotationMetadata, attributes);
 		checkExcludedClasses(configurations, exclusions);
+		// 移除
 		configurations.removeAll(exclusions);
 		configurations = getConfigurationClassFilter().filter(configurations);
+		// 目的是告诉ConditionEvaluationReport条件评估报告器对象来记录符合条件的自动配置类
 		fireAutoConfigurationImportEvents(configurations, exclusions);
+		// 将符合条件和要排除的自动配置类封装进AutoConfigurationEntry对象，并返回；
 		return new AutoConfigurationEntry(configurations, exclusions);
 	}
 
@@ -183,6 +188,7 @@ public class AutoConfigurationImportSelector implements DeferredImportSelector, 
 	protected List<String> getCandidateConfigurations(AnnotationMetadata metadata, AnnotationAttributes attributes) {
 		List<String> configurations = new ArrayList<>(
 				// 此处 loadFactoryNames获取ETA-INF/spring.factories 下自动配置的类集合
+				// EnableAutoConfiguration.class
 				SpringFactoriesLoader.loadFactoryNames(getSpringFactoriesLoaderFactoryClass(), getBeanClassLoader()));
 		ImportCandidates.load(AutoConfiguration.class, getBeanClassLoader()).forEach(configurations::add);
 		Assert.notEmpty(configurations,
@@ -440,6 +446,7 @@ public class AutoConfigurationImportSelector implements DeferredImportSelector, 
 					() -> String.format("Only %s implementations are supported, got %s",
 							AutoConfigurationImportSelector.class.getSimpleName(),
 							deferredImportSelector.getClass().getName()));
+			// 调用getAutoConfigurationEntry方法得到自动配置类放入autoConfigurationEntry对象中
 			AutoConfigurationEntry autoConfigurationEntry = ((AutoConfigurationImportSelector) deferredImportSelector)
 				.getAutoConfigurationEntry(annotationMetadata);
 			this.autoConfigurationEntries.add(autoConfigurationEntry);

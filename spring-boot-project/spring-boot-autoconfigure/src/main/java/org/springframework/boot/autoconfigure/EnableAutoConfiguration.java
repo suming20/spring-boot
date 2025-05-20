@@ -81,7 +81,7 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 @Documented
 @Inherited
 @AutoConfigurationPackage
-// import importSelector扫描
+// import importSelector扫描 import是spring的底层注解，导入其他Bean
 @Import(AutoConfigurationImportSelector.class)
 public @interface EnableAutoConfiguration {
 

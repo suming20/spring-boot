@@ -38,6 +38,14 @@ import org.springframework.context.annotation.Import;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
+/**
+ * spring的底层注解@Import，给容器中导入一个组件
+ * 在@Import注解的参数中可以填写类名，
+ * 1. 如果abc类实现了ImportSelector接口，spring容器就会实例化abc类，并且调用selectImports方法；
+ * 2。DeferredImportSelector是ImportSelector的子列，如果abc类实现了DeferredImportSelector接口，spring实例化abc类，并且调用select*Import方法，调用时时机要晚于直接实现ImportSelector注解
+ * 3。如果abc类实现了ImportBeanDefinitionRegistry接口，spring实例化该类，并调用其registerBeanDefinitions方法；
+ * 4。没有实现上述接口，则直接实例化；
+ */
 @Import(AutoConfigurationPackages.Registrar.class)
 public @interface AutoConfigurationPackage {
 

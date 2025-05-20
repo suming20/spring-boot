@@ -91,6 +91,8 @@ public abstract class AutoConfigurationPackages {
 	 * @param packageNames the package names to set
 	 */
 	public static void register(BeanDefinitionRegistry registry, String... packageNames) {
+		// 这里参数packageNames 缺省情况下就是一个字符串，是使用了注解
+		// @SpringBootApplication 的SpringBoot应用程序入口类所在的包
 		if (registry.containsBeanDefinition(BEAN)) {
 			BasePackagesBeanDefinition beanDefinition = (BasePackagesBeanDefinition) registry.getBeanDefinition(BEAN);
 			beanDefinition.addBasePackages(packageNames);
@@ -108,6 +110,7 @@ public abstract class AutoConfigurationPackages {
 
 		@Override
 		public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
+			// 将注解标注的元信息传入，获取到相应的包名
 			register(registry, new PackageImports(metadata).getPackageNames().toArray(new String[0]));
 		}
 

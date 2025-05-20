@@ -51,6 +51,7 @@ import org.springframework.data.repository.Repository;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+// Inherited标识可以被子类继承改注解
 @Inherited
 @SpringBootConfiguration
 @EnableAutoConfiguration
