@@ -168,6 +168,7 @@ class BeanDefinitionLoader {
 			((GroovyBeanDefinitionReader) this.groovyReader).beans(loader.getBeans());
 		}
 		if (isEligible(source)) {
+			// AnnotationBeanDefinitionReader 将启动类BeanDefinition注册进beanDefinitionMap
 			this.annotatedReader.register(source);
 		}
 	}

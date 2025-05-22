@@ -56,6 +56,7 @@ public enum WebApplicationType {
 
 	// web环境的判断
 	static WebApplicationType deduceFromClasspath() {
+		// classpath下必须存在org.springframework.web.reactive.DispatcherHandler
 		if (ClassUtils.isPresent(WEBFLUX_INDICATOR_CLASS, null) && !ClassUtils.isPresent(WEBMVC_INDICATOR_CLASS, null)
 				&& !ClassUtils.isPresent(JERSEY_INDICATOR_CLASS, null)) {
 			return WebApplicationType.REACTIVE;
