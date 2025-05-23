@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>cn.suming</groupId>
-	<artifactId>spring-boot-mytest</artifactId>
+	<artifactId>csutom-spring-boot-starter</artifactId>
 	<version>1.0-SNAPSHOT</version>
 
 	<properties>
@@ -14,34 +14,11 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.18</version>
-		<relativePath/>
-	</parent>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>cn.suming</groupId>
-			<artifactId>csutom-spring-boot-starter</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+			<version>3.4.5</version>
 		</dependency>
 	</dependencies>
 </project>

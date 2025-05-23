@@ -9,7 +9,7 @@ public class CustomBean {
 	private Integer id;
 
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Integer id) {
