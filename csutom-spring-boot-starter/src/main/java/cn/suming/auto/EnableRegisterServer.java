@@ -14,30 +14,22 @@
  * limitations under the License.
  */
 
-package cn.suming.config;
+package cn.suming.auto;
 
-import cn.suming.auto.ConfigMaker;
-import cn.suming.bean.SimpleBean;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 /**
  * @author suming
- * @since 2025/5/23 21:43
+ * @since 2025/5/24 10:35
+ * 自定义配置注解
  */
-@Configuration
-// 条件注解判断是否加载
-@ConditionalOnBean(ConfigMaker.class)
-public class CustomConfiguration {
-	static {
-		System.out.println("customAutoConfiguration init...");
-	}
-
-	@Bean
-	public SimpleBean simpleBean() {
-		return new SimpleBean();
-	}
+@Target({ ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Import(ConfigMaker.class)
+public @interface EnableRegisterServer {
 }
