@@ -159,6 +159,8 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 	protected void onRefresh() {
 		super.onRefresh();
 		try {
+			// spring容器fresh重写了onRefresh方法，用来创建Tomcat容器
+			// 会获取嵌入式的tomcat容器工厂，用来获取tomcat
 			createWebServer();
 		}
 		catch (Throwable ex) {
@@ -179,6 +181,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		ServletContext servletContext = getServletContext();
 		if (webServer == null && servletContext == null) {
 			StartupStep createWebServer = this.getApplicationStartup().start("spring.boot.webserver.create");
+			// 获取嵌入式Servlet容器工厂
 			ServletWebServerFactory factory = getWebServerFactory();
 			createWebServer.tag("factory", factory.getClass().toString());
 			this.webServer = factory.getWebServer(getSelfInitializer());
