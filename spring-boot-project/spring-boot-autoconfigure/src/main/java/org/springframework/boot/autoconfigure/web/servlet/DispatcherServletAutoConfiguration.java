@@ -66,6 +66,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 @AutoConfiguration(after = ServletWebServerFactoryAutoConfiguration.class)
 @ConditionalOnWebApplication(type = Type.SERVLET)
 @ConditionalOnClass(DispatcherServlet.class)
+// DispatcherServlet autoConfiguration
 public class DispatcherServletAutoConfiguration {
 
 	/**
