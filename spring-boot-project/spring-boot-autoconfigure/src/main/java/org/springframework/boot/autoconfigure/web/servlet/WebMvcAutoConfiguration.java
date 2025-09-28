@@ -145,6 +145,7 @@ import org.springframework.web.util.pattern.PathPatternParser;
 @ConditionalOnClass({ Servlet.class, DispatcherServlet.class, WebMvcConfigurer.class })
 @ConditionalOnMissingBean(WebMvcConfigurationSupport.class)
 @AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE + 10)
+// 2025/9/24 webMvcAutoConfiguration
 public class WebMvcAutoConfiguration {
 
 	/**
@@ -168,6 +169,7 @@ public class WebMvcAutoConfiguration {
 	@ConditionalOnMissingBean(HiddenHttpMethodFilter.class)
 	@ConditionalOnProperty(prefix = "spring.mvc.hiddenmethod.filter", name = "enabled")
 	public OrderedHiddenHttpMethodFilter hiddenHttpMethodFilter() {
+		// 用于处理form表单提交restFul方式，form中隐藏的（条件手动开启）_method字段取真实的请求类型，其他方式不用管
 		return new OrderedHiddenHttpMethodFilter();
 	}
 
@@ -205,6 +207,7 @@ public class WebMvcAutoConfiguration {
 
 		private ServletContext servletContext;
 
+		// 有参构造的所有参数都会从容器中获取
 		public WebMvcAutoConfigurationAdapter(WebProperties webProperties, WebMvcProperties mvcProperties,
 				ListableBeanFactory beanFactory, ObjectProvider<HttpMessageConverters> messageConvertersProvider,
 				ObjectProvider<ResourceHandlerRegistrationCustomizer> resourceHandlerRegistrationCustomizerProvider,
@@ -213,7 +216,9 @@ public class WebMvcAutoConfiguration {
 			this.resourceProperties = webProperties.getResources();
 			this.mvcProperties = mvcProperties;
 			this.beanFactory = beanFactory;
+			// messageConverters
 			this.messageConvertersProvider = messageConvertersProvider;
+			// 资源处理器的自定义处理
 			this.resourceHandlerRegistrationCustomizer = resourceHandlerRegistrationCustomizerProvider.getIfAvailable();
 			this.dispatcherServletPath = dispatcherServletPath;
 			this.servletRegistrations = servletRegistrations;
@@ -331,6 +336,7 @@ public class WebMvcAutoConfiguration {
 
 		@Override
 		public void addResourceHandlers(ResourceHandlerRegistry registry) {
+			// 可以配置禁用静态资源配置 spring.resources.add-mappings:false 默认是true
 			if (!this.resourceProperties.isAddMappings()) {
 				logger.debug("Default resource handling disabled");
 				return;
@@ -435,6 +441,7 @@ public class WebMvcAutoConfiguration {
 			return super.createRequestMappingHandlerAdapter();
 		}
 
+		// 欢迎页HandlerMapping
 		@Bean
 		public WelcomePageHandlerMapping welcomePageHandlerMapping(ApplicationContext applicationContext,
 				FormattingConversionService mvcConversionService, ResourceUrlProvider mvcResourceUrlProvider) {
@@ -540,6 +547,7 @@ public class WebMvcAutoConfiguration {
 			return ValidatorAdapter.get(getApplicationContext(), getValidator());
 		}
 
+		// 配置了requestMappingHandLerMapping
 		@Override
 		protected RequestMappingHandlerMapping createRequestMappingHandlerMapping() {
 			if (this.mvcRegistrations != null) {
