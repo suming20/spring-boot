@@ -345,6 +345,7 @@ public class WebMvcProperties {
 		 * Whether a request parameter ("format" by default) should be used to determine
 		 * the requested media type.
 		 */
+		// content Negotiation 内容协商配置
 		private boolean favorParameter = false;
 
 		/**
