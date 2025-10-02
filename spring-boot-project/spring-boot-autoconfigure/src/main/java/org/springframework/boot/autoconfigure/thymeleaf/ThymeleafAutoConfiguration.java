@@ -77,6 +77,7 @@ import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 @ConditionalOnClass({ TemplateMode.class, SpringTemplateEngine.class })
 @Import({ TemplateEngineConfigurations.ReactiveTemplateEngineConfiguration.class,
 		TemplateEngineConfigurations.DefaultTemplateEngineConfiguration.class })
+//thymeleafAutoConfiguration
 public class ThymeleafAutoConfiguration {
 
 	@Configuration(proxyBeanMethods = false)

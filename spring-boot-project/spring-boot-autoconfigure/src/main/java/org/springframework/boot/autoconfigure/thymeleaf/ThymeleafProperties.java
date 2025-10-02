@@ -39,6 +39,7 @@ public class ThymeleafProperties {
 
 	private static final Charset DEFAULT_ENCODING = StandardCharsets.UTF_8;
 
+	// thymeleaf默认的配置
 	public static final String DEFAULT_PREFIX = "classpath:/templates/";
 
 	public static final String DEFAULT_SUFFIX = ".html";
