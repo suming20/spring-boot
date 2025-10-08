@@ -54,6 +54,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 @ConditionalOnProperty(prefix = "spring.servlet.multipart", name = "enabled", matchIfMissing = true)
 @ConditionalOnWebApplication(type = Type.SERVLET)
 @EnableConfigurationProperties(MultipartProperties.class)
+// multipart 文件上传配置
 public class MultipartAutoConfiguration {
 
 	private final MultipartProperties multipartProperties;
@@ -68,6 +69,7 @@ public class MultipartAutoConfiguration {
 		return this.multipartProperties.createMultipartConfig();
 	}
 
+	// 文件上传解析器
 	@Bean(name = DispatcherServlet.MULTIPART_RESOLVER_BEAN_NAME)
 	@ConditionalOnMissingBean(MultipartResolver.class)
 	public StandardServletMultipartResolver multipartResolver() {
