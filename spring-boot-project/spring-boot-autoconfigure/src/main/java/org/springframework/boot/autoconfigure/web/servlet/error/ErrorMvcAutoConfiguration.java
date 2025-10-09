@@ -89,6 +89,7 @@ import org.springframework.web.util.HtmlUtils;
 @ConditionalOnWebApplication(type = Type.SERVLET)
 @ConditionalOnClass({ Servlet.class, DispatcherServlet.class })
 @EnableConfigurationProperties({ ServerProperties.class, WebMvcProperties.class })
+// 异常处理规则
 public class ErrorMvcAutoConfiguration {
 
 	private final ServerProperties serverProperties;
