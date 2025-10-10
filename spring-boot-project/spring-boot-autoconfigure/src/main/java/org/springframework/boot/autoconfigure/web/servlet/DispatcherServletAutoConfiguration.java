@@ -88,6 +88,7 @@ public class DispatcherServletAutoConfiguration {
 		@Bean(name = DEFAULT_DISPATCHER_SERVLET_BEAN_NAME)
 		public DispatcherServlet dispatcherServlet(WebMvcProperties webMvcProperties) {
 			DispatcherServlet dispatcherServlet = new DispatcherServlet();
+			// 属性绑定webmvc properties
 			dispatcherServlet.setDispatchOptionsRequest(webMvcProperties.isDispatchOptionsRequest());
 			dispatcherServlet.setDispatchTraceRequest(webMvcProperties.isDispatchTraceRequest());
 			dispatcherServlet.setThrowExceptionIfNoHandlerFound(webMvcProperties.isThrowExceptionIfNoHandlerFound());
@@ -114,6 +115,7 @@ public class DispatcherServletAutoConfiguration {
 	@Import(DispatcherServletConfiguration.class)
 	protected static class DispatcherServletRegistrationConfiguration {
 
+		// 通过ServletRegistrationBean的方法是注入dispatcherServlet, 默认映射的路径是“/"
 		@Bean(name = DEFAULT_DISPATCHER_SERVLET_REGISTRATION_BEAN_NAME)
 		@ConditionalOnBean(value = DispatcherServlet.class, name = DEFAULT_DISPATCHER_SERVLET_BEAN_NAME)
 		public DispatcherServletRegistrationBean dispatcherServletRegistration(DispatcherServlet dispatcherServlet,

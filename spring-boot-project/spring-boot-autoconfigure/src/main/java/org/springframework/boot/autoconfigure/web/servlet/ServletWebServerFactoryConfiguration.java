@@ -63,6 +63,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 class ServletWebServerFactoryConfiguration {
 
+	// 条件判断，满足则创建对应的容器
 	@Configuration(proxyBeanMethods = false)
 	@ConditionalOnClass({ Servlet.class, Tomcat.class, UpgradeProtocol.class })
 	@ConditionalOnMissingBean(value = ServletWebServerFactory.class, search = SearchStrategy.CURRENT)

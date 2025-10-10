@@ -104,6 +104,7 @@ public class TomcatWebServer implements WebServer {
 		initialize();
 	}
 
+	// 拥有初始化方法
 	private void initialize() throws WebServerException {
 		logger.info("Tomcat initialized with port(s): " + getPortsDescription(false));
 		synchronized (this.monitor) {
