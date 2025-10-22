@@ -264,12 +264,12 @@ public class SpringApplication {
 		this.primarySources = new LinkedHashSet<>(Arrays.asList(primarySources));
 		// 推断应用类型，后面会根据类型对应的环境，常用的一般都是Servlet环境
 		this.webApplicationType = WebApplicationType.deduceFromClasspath();
-		// 初始化classpath META-INF/spring.factories中配置的ApplicationContextInitializer
+		// 初始化classpath META-INF/spring.factories中配置的BootstrapRegistryInitializer
 		this.bootstrapRegistryInitializers = new ArrayList<>(
 				getSpringFactoriesInstances(BootstrapRegistryInitializer.class));
 		// 获取当前配置的ApplicationContextInitializer
 		setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));
-		// applicationListener的加载
+		// applicationListener的加载 应用监听器
 		setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
 		// 根据调用栈，推断出main方法的类名
 		this.mainApplicationClass = deduceMainApplicationClass();
@@ -299,6 +299,7 @@ public class SpringApplication {
 	// todo 核心启动run方法
 	public ConfigurableApplicationContext run(String... args) {
 		long startTime = System.nanoTime();
+		// 创建引导上下文
 		DefaultBootstrapContext bootstrapContext = createBootstrapContext();
 		// spring的上下文对象
 		ConfigurableApplicationContext context = null;
@@ -307,14 +308,15 @@ public class SpringApplication {
 		SpringApplicationRunListeners listeners = getRunListeners(args);
 		listeners.starting(bootstrapContext, this.mainApplicationClass);
 		try {
+			// 保存命令行参数
 			ApplicationArguments applicationArguments = new DefaultApplicationArguments(args);
-			// environment构建
+			// 准备环境，environment的构建
 			ConfigurableEnvironment environment = prepareEnvironment(listeners, bootstrapContext, applicationArguments);
 			// 处理需要忽略的Bean
 			configureIgnoreBeanInfo(environment);
 			// 打印banner
 			Banner printedBanner = printBanner(environment);
-			// 创建ApplicationContext
+			// 创建IOC容器(ApplicationContext)
 			context = createApplicationContext();
 			context.setApplicationStartup(this.applicationStartup);
 			// 刷新上下文，准备，准备阶段会将当前启动类register到容器上下文中
@@ -347,6 +349,7 @@ public class SpringApplication {
 
 	private DefaultBootstrapContext createBootstrapContext() {
 		DefaultBootstrapContext bootstrapContext = new DefaultBootstrapContext();
+		// 执行在构造器中获取的RegistryInitializer实现
 		this.bootstrapRegistryInitializers.forEach((initializer) -> initializer.initialize(bootstrapContext));
 		return bootstrapContext;
 	}
@@ -387,10 +390,11 @@ public class SpringApplication {
 	private void prepareContext(DefaultBootstrapContext bootstrapContext, ConfigurableApplicationContext context,
 			ConfigurableEnvironment environment, SpringApplicationRunListeners listeners,
 			ApplicationArguments applicationArguments, Banner printedBanner) {
-		context.setEnvironment(environment); // environment传递到上下文中
+		context.setEnvironment(environment);
 		postProcessApplicationContext(context);
-		// 此处调用的了applicationInitializer#initialize方法
-		applyInitializers(context);// 调用签名声明的applicationInitializer
+		// 此处调用的了applicationInitializer#initialize方法 初始化扩展
+		applyInitializers(context);
+		// 发布contextPrepared事件
 		listeners.contextPrepared(context);
 		bootstrapContext.close(context);
 		if (this.logStartupInfo) {
@@ -415,11 +419,11 @@ public class SpringApplication {
 		}
 		context.addBeanFactoryPostProcessor(new PropertySourceOrderingBeanFactoryPostProcessor(context));
 		// Load the sources
-		Set<Object> sources = getAllSources(); // 获取SpringApplication的source成员，一般为springboot的启动类
+		Set<Object> sources = getAllSources();
 		Assert.notEmpty(sources, "Sources must not be empty");
 		// 加载启动类，将启动类注入容器  sources是启动类
-		load(context, sources.toArray(new Object[0])); // 加载启动类到ApplicationContext，后续利用source加载其他声明的bean
-		// 发布容器加载事件
+		load(context, sources.toArray(new Object[0]));
+		// 发布contextLoaded事件
 		listeners.contextLoaded(context); // 发送 ContextLoader
 	}
 
@@ -505,6 +509,7 @@ public class SpringApplication {
 		if (this.addConversionService) {
 			environment.setConversionService(new ApplicationConversionService());
 		}
+		// 加载外部的配置源
 		configurePropertySources(environment, args);
 		configureProfiles(environment, args);
 	}
@@ -802,6 +807,7 @@ public class SpringApplication {
 			try {
 				handleExitCode(context, exception);
 				if (listeners != null) {
+					// 发布failed事件
 					listeners.failed(context, exception);
 				}
 			}

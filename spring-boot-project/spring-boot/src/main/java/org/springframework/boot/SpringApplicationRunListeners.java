@@ -52,7 +52,7 @@ class SpringApplicationRunListeners {
 		this.applicationStartup = applicationStartup;
 	}
 
-	// 调用start方法，在run方法开始时，该方法就立即被调用，可用于在初始化早起做一些工作
+	// 调用start方法，在run方法开始时，该方法就立即被调用，通知系统启动的过程，方便所有的Listener进行事件感知
 	void starting(ConfigurableBootstrapContext bootstrapContext, Class<?> mainApplicationClass) {
 		doWithListeners("spring.boot.application.starting", (listener) -> listener.starting(bootstrapContext),
 				(step) -> {
