@@ -330,7 +330,7 @@ public class SpringApplication {
 				new StartupInfoLogger(this.mainApplicationClass, environment).logStarted(getApplicationLog(), startup);
 			}
 			listeners.started(context, startup.timeTakenToStarted());
-			// 内部会调用ApplicaitonRunner和CommandLineRunner
+			// 内部会调用ApplicationRunner和CommandLineRunner
 			callRunners(context, applicationArguments);
 		}
 		catch (Throwable ex) {
@@ -389,6 +389,7 @@ public class SpringApplication {
 		context.setEnvironment(environment);
 		postProcessApplicationContext(context);
 		addAotGeneratedInitializerIfNecessary(this.initializers);
+		// 调用ApplicationContextInitializer的实现
 		applyInitializers(context);
 		listeners.contextPrepared(context);
 		bootstrapContext.close(context);
@@ -789,6 +790,7 @@ public class SpringApplication {
 				: AnnotationAwareOrderComparator.INSTANCE;
 	}
 
+	// 具体调用ApplicationRunner&CommandLineRunner
 	private void callRunner(Runner runner, ApplicationArguments args) {
 		if (runner instanceof ApplicationRunner) {
 			callRunner(ApplicationRunner.class, runner, (applicationRunner) -> applicationRunner.run(args));

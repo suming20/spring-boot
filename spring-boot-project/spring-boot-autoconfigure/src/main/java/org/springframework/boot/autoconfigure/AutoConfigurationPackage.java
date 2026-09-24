@@ -33,6 +33,8 @@ import org.springframework.context.annotation.Import;
  * @author Phillip Webb
  * @since 1.3.0
  * @see AutoConfigurationPackages
+ * /@AutoConfigurationPackage 会将被修饰的类作为主配置类，该类所在的 package 会被视为根路径，
+ * Spring Boot 默认会自动扫描根路径下的所有 Spring Bean（被 @Component 以及继承 @Component 的各个注解所修饰的类）
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
