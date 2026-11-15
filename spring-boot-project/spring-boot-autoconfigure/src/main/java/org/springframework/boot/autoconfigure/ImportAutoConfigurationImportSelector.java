@@ -113,6 +113,7 @@ class ImportAutoConfigurationImportSelector extends AutoConfigurationImportSelec
 	}
 
 	protected Collection<String> loadFactoryNames(Class<?> source) {
+		// classpath路径xxx.import方式实现自动装配
 		return ImportCandidates.load(source, getBeanClassLoader()).getCandidates();
 	}
 

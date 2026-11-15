@@ -164,6 +164,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 	protected void onRefresh() {
 		super.onRefresh();
 		try {
+			// 扩展refresh，创建对应的webServer
 			createWebServer();
 		}
 		catch (Throwable ex) {
@@ -190,6 +191,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 			StartupStep createWebServer = getApplicationStartup().start("spring.boot.webserver.create");
 			ServletWebServerFactory factory = getWebServerFactory();
 			createWebServer.tag("factory", factory.getClass().toString());
+			// getSelfInitializer 一系列的initializer，包含了我们的DispatcherServlet
 			this.webServer = factory.getWebServer(getSelfInitializer());
 			createWebServer.end();
 			getBeanFactory().registerSingleton("webServerGracefulShutdown",

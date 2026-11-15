@@ -275,6 +275,7 @@ public class SpringApplication {
 		this.primarySources = new LinkedHashSet<>(Arrays.asList(primarySources));
 		// 一般都使用Servlet
 		this.properties.setWebApplicationType(WebApplicationType.deduceFromClasspath());
+		// 及早的初始化操作，在createBootstrapContext就会被激活
 		this.bootstrapRegistryInitializers = new ArrayList<>(
 				getSpringFactoriesInstances(BootstrapRegistryInitializer.class));
 		// applicationContextInitializer & ApplicationListener
@@ -301,6 +302,7 @@ public class SpringApplication {
 	 * {@link ApplicationContext}.
 	 * @param args the application arguments (usually passed from a Java main method)
 	 * @return a running {@link ApplicationContext}
+	 * todo new SpringApplication().run()
 	 */
 	public ConfigurableApplicationContext run(String... args) {
 		Startup startup = Startup.create();
@@ -318,9 +320,10 @@ public class SpringApplication {
 			ConfigurableEnvironment environment = prepareEnvironment(listeners, bootstrapContext, applicationArguments);
 			// 打印banner
 			Banner printedBanner = printBanner(environment);
+			// 重点：servlet对应的时AnnotationConfigServletWebServerApplicationContext
 			context = createApplicationContext();
 			context.setApplicationStartup(this.applicationStartup);
-			// 准备容器
+			// 准备容器，内部会执行ApplicationContextInitializer的扩展实现
 			prepareContext(bootstrapContext, context, environment, listeners, applicationArguments, printedBanner);
 			// 刷新容器
 			refreshContext(context);
@@ -357,6 +360,7 @@ public class SpringApplication {
 			DefaultBootstrapContext bootstrapContext, ApplicationArguments applicationArguments) {
 		// Create and configure the environment
 		ConfigurableEnvironment environment = getOrCreateEnvironment();
+		// 命令行参数，启动的时候，-Dspring.profiles.active=dev等
 		configureEnvironment(environment, applicationArguments.getSourceArgs());
 		ConfigurationPropertySources.attach(environment);
 		listeners.environmentPrepared(bootstrapContext, environment);
@@ -421,6 +425,7 @@ public class SpringApplication {
 			// Load the sources
 			Set<Object> sources = getAllSources();
 			Assert.notEmpty(sources, "Sources must not be empty");
+			// 注解加载，main类(SpringConfiguration) bean到beanDactory
 			load(context, sources.toArray(new Object[0]));
 		}
 		listeners.contextLoaded(context);
